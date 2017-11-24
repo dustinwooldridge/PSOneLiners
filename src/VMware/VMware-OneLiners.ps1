@@ -11,3 +11,8 @@ get-vm | Get-NetworkAdapter | Where-Object {$_.MacAddress -eq $mac} | format-lis
 # Get list of VM's including VM Name, FQDN and OS
 Get-VM -server $vcenter | Sort | Get-View -Property @("Name", "Guest.HostName", "Config.GuestFullName", "Guest.GuestFullName") | Select -Property Name, @{N = "FQDN"; E = {$_.Guest.HostName}}, @{N = "Configured OS"; E = {$_.Config.GuestFullName}}, @{N = "Running OS"; E = {$_.Guest.GuestFullName}} | Format-Table -AutoSize
 
+# Get all VM's with Tags, select the VMName, Tag and Category
+Get-tag "*" | ForEach-Object {$Tag = $_; get-vm -Tag $_ | ForEach-Object {[pscustomobject]@{name = $_.name; tag = $Tag.name; Category = $tag.category}}}  
+
+# Get a list of VM's and their ESX Host using wildcards
+Get-VM -Name '*RDP*' | Select Name, VMHost 
