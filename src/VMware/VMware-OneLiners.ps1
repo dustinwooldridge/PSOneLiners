@@ -22,3 +22,8 @@ get-vm | Select Name, Version, VMHost,  | Export-CSV c:\temp\vm-hw-compatibility
 
 
 Get-VM -Name '*RDP*' "Name", "Guest.HostName", "Config.GuestFullName", "Guest.GuestFullName") | Select -Property Name, @{N = "FQDN"; E = {$_.Guest.HostName}}, @{N = "Configured OS"; E = {$_.Config.GuestFullName}}, @{N = "Running OS"; E = {$_.Guest.GuestFullName}} | Format-Table -AutoSize
+
+
+
+# Get a list of all VM's with the folder and Tag assigned
+Get-VM | Select Name, Folder, @{N = "Tags"; E = {((Get-TagAssignment -Entity $_ | select -ExpandProperty Tag).Name -join ",")}} | ogv
