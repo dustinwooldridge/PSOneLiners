@@ -27,3 +27,7 @@ Get-VM -Name '*RDP*' "Name", "Guest.HostName", "Config.GuestFullName", "Guest.Gu
 
 # Get a list of all VM's with the folder and Tag assigned
 Get-VM | Select Name, Folder, @{N = "Tags"; E = {((Get-TagAssignment -Entity $_ | select -ExpandProperty Tag).Name -join ",")}} | ogv
+
+
+# Get a list of all VM's with Snapshots and include the VM name, date created, snapshot name, description and powerstate
+get-vm | Get-Snapshot | sort VM | Format-Table vm, created, name, description, powerstate -AutoSize
