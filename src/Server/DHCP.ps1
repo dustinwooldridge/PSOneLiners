@@ -1,0 +1,2 @@
+# Get all DHCP Server Leases for all DHCP Scopes and Export to CSV file
+Get-DHCPServerV4Scope -ComputerName "mydhcpserver01" | ForEach {Get-DHCPServerv4Lease -ComputerName P10dhcp01.rbcint.com -ScopeID $_.ScopeID } |  Export-Csv "D:\DHCP\P10DHCPLeases.csv" -NoTypeInformation
